@@ -18,9 +18,9 @@ from cifsdk.exceptions import AuthError, TimeoutError, InvalidSearch, CIFBusy
 from cifsdk.constants import PYVERSION
 from csirtg_indicator import Indicator
 
-SNDTIMEO = os.getenv('ZMQ_SNDTIMEO', '45000')
+SNDTIMEO = os.getenv('ZMQ_SNDTIMEO', '90000')
 SNDTIMEO = int(SNDTIMEO)
-RCVTIMEO = os.getenv('ZMQ_RCVTIMEO', '45000')
+RCVTIMEO = os.getenv('ZMQ_RCVTIMEO', '90000')
 RCVTIMEO = int(RCVTIMEO)
 LINGER = 3
 ENCODING_DEFAULT = "utf-8"
