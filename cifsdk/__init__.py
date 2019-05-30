@@ -1,7 +1,7 @@
 
 
+from csirtg_indicator import Indicator
 from cifsdk.client.http import HTTP as Client
-from cifsdk.constants import REMOTE, TOKEN
 
 
 def search(filters={}):
@@ -11,6 +11,14 @@ def search(filters={}):
             'tags': 'botnet'
         }
 
-    cli = Client()
+    return Client().search(filters)
 
-    
+
+def submit(**kv):
+    i = Indicator(**kv)
+
+    return Client().indicators_create(i)
+
+
+def ping():
+    return Client().ping()

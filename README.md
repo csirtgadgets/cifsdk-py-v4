@@ -14,15 +14,22 @@ $ cif --itype url --tags phishing
 ```python
 
 from pprint import pprint
-from cifsdk import search
+from cifsdk import search, submit, ping
+
+if not ping():
+    print("Server Unavailable...")
 
 for i in search({'indicator': 'example.com'}):
     pprint(i)
 
+
+rv = submit({'indicator': 'example.com', 'tags': 'phishing', 'group': 'everyone'})
+
+
 ```
 
 
-see the [CIFv4](https://github.com/csirtgadgets/verbose-robot/wiki) wiki for more.
+see the [CIFv4](https://github.com/csirtgadgets/verbose-robot-sdk-py/wiki) wiki for more.
 
 # Need More Advanced Help?
 
