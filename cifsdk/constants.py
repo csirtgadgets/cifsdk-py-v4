@@ -55,3 +55,52 @@ MAX_FIELD_SIZE = 30
 VALID_FILTERS = ['indicator', 'itype', 'confidence', 'provider', 'limit', 'application', 'nolog', 'tags', 'days',
                  'hours', 'groups', 'reported_at', 'cc', 'asn', 'asn_desc', 'rdata', 'first_at', 'last_at', 'region',
                  'probability', 'no_feed', 'days', 'hours', 'today', 'latitude', 'longitude', 'probability']
+
+PROFILES = {
+    'splunk': {
+        'format': 'csv',
+        'confidence': 3,
+        'hours': 1,
+        'limit': 25000,
+        'itype': 'ipv4',
+    },
+    'bind': {
+        'format': 'bind',
+        'confidence': 4,
+        'itype': 'fqdn',
+        'days': 45,
+        'tags': 'phishing,malware,botnet',
+        'limit': 250000,
+    },
+    'bro': {
+        'confidence': 3,
+        'format': 'bro',
+        'itype': 'ipv4',
+        'days': 21,
+        'limit': 250000,
+        'tags': 'botnet'
+    },
+    'snort': {
+        'confidence': 3,
+        'itype': 'ipv4',
+        'format': 'snort',
+        'days': 21,
+        'limit': 250000,
+        'tags': 'botnet'
+    },
+    'firewall': {
+        'format': 'csv',
+        'itype': 'ipv4',
+        'confidence': 4,
+        'days': 21,
+        'tags': 'scanner,bruteforce,botnet',
+        'limit': 25000,
+    },
+    'sem': {
+        'format': 'csv',
+        'confidence': 3,
+        'hours': 1,
+        'limit': 25000,
+        'itype': 'ipv4',
+    },
+}
