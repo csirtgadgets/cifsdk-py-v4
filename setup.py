@@ -9,9 +9,6 @@ if sys.version_info < (3, 6):
     print("\n")
     raise SystemExit
 
-# vagrant doesn't appreciate hard-linking
-if os.environ.get('USER') == 'vagrant' or os.path.isdir('/vagrant'):
-    del os.link
 
 # https://www.pydanny.com/python-dot-py-tricks.html
 if sys.argv[-1] == 'test':
@@ -49,11 +46,17 @@ setup(
     author_email="wes@csirtgadgets.com",
     packages=find_packages(exclude=("tests",)),
     install_requires=[
-        'SQLAlchemy',
         'ujson',
         'msgpack',
         'tornado',
-        'csirtg_indicator>=2.0a2,<3.0'
+        'csirtg_indicator>=2.0a24,<3.0',
+        'requests',
+        'pyyaml',
+        'websocket-client',
+        'geoip2',
+        'csirtgsdk',
+        'tornado'
+
     ],
     scripts=[],
     entry_points={

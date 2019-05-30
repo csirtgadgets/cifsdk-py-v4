@@ -6,7 +6,8 @@ import textwrap
 from argparse import ArgumentParser
 from argparse import RawDescriptionHelpFormatter
 
-from cifsdk.constants import REMOTE_ADDR, TOKEN, SEARCH_LIMIT, FORMAT, COLUMNS, ADVANCED
+from cifsdk.constants import REMOTE_ADDR, TOKEN, SEARCH_LIMIT, FORMAT, \
+    COLUMNS, ADVANCED, PROFILES
 from cifsdk.exceptions import AuthError, CIFBusy
 from csirtg_indicator.format import FORMATS
 from cifsdk.utils import setup_logging, get_argument_parser
@@ -14,72 +15,30 @@ from csirtg_indicator import Indicator
 from cifsdk.client.http import HTTP as Client
 from pprint import pprint
 
-PROFILES = {
-    'splunk': {
-        'format': 'csv',
-        'confidence': 3,
-        'hours': 1,
-        'limit': 25000,
-        'itype': 'ipv4',
-    },
-    'bind': {
-        'format': 'bind',
-        'confidence': 4,
-        'itype': 'fqdn',
-        'days': 45,
-        'tags': 'phishing,malware,botnet',
-        'limit': 250000,
-    },
-    'bro': {
-        'confidence': 3,
-        'format': 'bro',
-        'itype': 'ipv4',
-        'days': 21,
-        'limit': 250000,
-    },
-    'snort': {
-        'confidence': 3,
-        'itype': 'ipv4',
-        'format': 'snort',
-        'days': 21,
-        'limit': 250000,
-    },
-    'firewall': {
-        'format': 'csv',
-        'itype': 'ipv4',
-        'confidence': 4,
-        'days': 21,
-        'tags': 'scanner,bruteforce,botnet',
-        'limit': 25000
-    },
-    'sem': {
-        'format': 'csv',
-        'confidence': 3,
-        'hours': 1,
-        'limit': 25000,
-        'itype': 'ipv4',
-    },
-}
 
 logger = logging.getLogger(__name__)
 
 
 def _search(cli, args, options, filters):
-    if not filters.get('indicator') and (not filters.get('itype') and ADVANCED is False):
-        print('\nmissing --itype\n\n')
-        raise SystemExit
-
-    if not filters.get('indicator') and (not filters.get('tags') and ADVANCED is False):
-        print('\nmissing --tags [phishing|malware|botnet|scanner|pdns|whitelist|...]\n\n')
-        raise SystemExit
-
     fmt = options.get('format')
     if args.profile:
-        for k,v in PROFILES[args.profile].items():
+        for k, v in PROFILES[args.profile].items():
             if k == 'format':
                 fmt = v
             else:
-                filters[k] = v
+                if not filters.get(k):
+                    filters[k] = v
+
+    if not filters.get('indicator') and (not filters.get('itype') and
+                                         ADVANCED is False):
+        print('\nmissing --itype\n\n')
+        raise SystemExit
+
+    if not filters.get('indicator') and (not filters.get('tags') and
+                                         ADVANCED is False):
+        print('\nmissing --tags [phishing|malware|botnet|scanner|pdns|'
+              'whitelist|...]\n\n')
+        raise SystemExit
 
     try:
         rv = cli.search(filters)
@@ -89,8 +48,10 @@ def _search(cli, args, options, filters):
 
     except CIFBusy as e:
         print("\ncif-router is either too busy or requires a restart...")
-        print("if the problem continues, try increasing the amount of memory and cpus for the system")
-        print("\nhttps://github.com/csirtgadgets/verbose-robot/wiki/FAQ\nhttps://csirtg.io/support\n")
+        print("if the problem continues, try increasing the amount of memory "
+              "and cpus for the system")
+        print("\nhttps://github.com/csirtgadgets/verbose-robot/wiki/FAQ\n"
+              "https://csirtg.io/support\n")
         raise SystemExit
 
     except KeyboardInterrupt:
@@ -225,7 +186,8 @@ def main():
 
     p.add_argument('--graph', help='dump the graph', action='store_true')
 
-    p.add_argument('--profile', help='specify feed profile', choices=PROFILES.keys())
+    p.add_argument('--profile', help='specify feed profile',
+                   choices=PROFILES.keys())
 
     args = p.parse_args()
 
