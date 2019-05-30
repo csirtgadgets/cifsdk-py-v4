@@ -1,6 +1,35 @@
 # Getting Started
+## CommandLine
+```bash
+$ pip install 'cifsdk>=4.0,<5.0'
+$ export CIF_REMOTE=http://localhost:5000
+$ export CIF_TOKEN=1234..
 
-see the [CIFv4](https://github.com/csirtgadgets/verbose-robot/wiki) wiki
+$ cif -d -p
+$ cif --itype url --tags phishing
+..
+```
+
+## Python SDK
+```python
+
+from pprint import pprint
+from cifsdk import search, submit, ping
+
+if not ping():
+    print("Server Unavailable...")
+
+for i in search({'indicator': 'example.com'}):
+    pprint(i)
+
+
+rv = submit({'indicator': 'example.com', 'tags': 'phishing', 'group': 'everyone'})
+
+
+```
+
+
+see the [CIFv4](https://github.com/csirtgadgets/verbose-robot-sdk-py/wiki) wiki for more.
 
 # Need More Advanced Help?
 
