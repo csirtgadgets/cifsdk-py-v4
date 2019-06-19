@@ -8,7 +8,7 @@ from argparse import RawDescriptionHelpFormatter
 
 from cifsdk.constants import REMOTE_ADDR, TOKEN, SEARCH_LIMIT, FORMAT, \
     COLUMNS, ADVANCED, PROFILES
-from cifsdk.exceptions import AuthError, CIFBusy
+from cifsdk.exceptions import AuthError, CIFBusy, InvalidSearch
 from csirtg_indicator.format import FORMATS
 from cifsdk.utils import setup_logging, get_argument_parser
 from csirtg_indicator import Indicator
@@ -56,6 +56,13 @@ def _search(cli, args, options, filters):
 
     except KeyboardInterrupt:
         pass
+
+    except InvalidSearch as e:
+        if logger.getEffectiveLevel() == logging.DEBUG:
+            logger.error(e)
+
+        else:
+            print(f"\n{e}\n")
 
     except Exception as e:
         import traceback
