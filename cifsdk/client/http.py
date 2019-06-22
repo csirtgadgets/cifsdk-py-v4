@@ -194,7 +194,8 @@ class HTTP(Client):
             self._check_status(resp, expect=expect)
             n = 0
         except Exception as e:
-            if resp.status_code == 429 or resp.status_code in [500, 501, 502, 503, 504]:
+            if resp.status_code == 429 or resp.status_code in [500, 501, 502,
+                                                               503, 504]:
                 logger.error(e)
             else:
                 raise e
@@ -265,6 +266,9 @@ class HTTP(Client):
     def indicators_search(self, filters):
         data = self._get('indicators', params=filters)
         return data
+
+    def indicators_search_bulk(self, data):
+        return self._post('indicators/bulk', data, 200)
 
     def indicators_create(self, data):
         if isinstance(data, Indicator):
