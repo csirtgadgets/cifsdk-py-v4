@@ -33,6 +33,8 @@ notifications:
     on_success: never
     on_failure: never
 deploy:
+  provider: pypi
+  user: wesyoung
   password:
     secure: s+pF9JWlM2eQvlyf4j4/J1BhWAeNWrNC5fvF5kgiF+s3ueYVldgdSg/ra7DoPNBFkKR93CwmCUawr1tyiorgezJmHHilCiFf3qZR53APKN8wmIehpIKsP2NizTvmX4A+MahMFBjQJnMrTSD7ZL0+xS/nZzQdW4d6GPDkhU/Y6IQ7GkISk3iSEkVjoZ4XUKW8fpqRBNJxMbW/mAaoJbvrqsbOi6IJcaItY8IgTAng+1gDlwW4nBySw2sPhIBUjqgleuvBvw/Rlk9prHemCyp/1p/8o2RIgG0U+njyO/hNvPYDZYrAcy2ZTrFFwwXKyQSnI9KirXUst/dIwqYA039hnziR0T1wHUoz6wTBZgH1MgT/Im3G9nOCZiGkg4ckrhPFuR8O4R9MpzBSbpfe50ZX884jBkF3rf76nFzBzeB7aSMwot3PtolxoHrtkLXHFCfKAU72+m4Fai/FZ226P82JgzrqpsM8/g6mYzKHq3pK+rhMe5TgQ4CgRcTnlD4GHTdfD/tY/x10ufY5oNRTdkAoua3Q8CyQba15sF+UZMDA86tUlKd2oujc+gkVIlP9/P0It8fhahrKANrpnNQpjE07fzCykTNWLiaqgDwkeBjMjGq4JUFoKOhacOA6UfBJzcXDUbaS49FQTXsaA60F/dVjyqucd5yMh7P5++1tsZCXaAA=
   on:
