@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+import sys
 import select
 import textwrap
 from argparse import ArgumentParser
@@ -29,16 +30,17 @@ def _search(cli, args, options, filters):
                 if not filters.get(k):
                     filters[k] = v
 
-    if not filters.get('indicator') and (not filters.get('itype') and
-                                         ADVANCED is False):
-        print('\nmissing --itype\n\n')
-        raise SystemExit
+    if isinstance(filters, dict):
+        if not filters.get('indicator') and (not filters.get('itype') and
+                                             ADVANCED is False):
+            print('\nmissing --itype\n\n')
+            raise SystemExit
 
-    if not filters.get('indicator') and (not filters.get('tags') and
-                                         ADVANCED is False):
-        print('\nmissing --tags [phishing|malware|botnet|scanner|pdns|'
-              'whitelist|...]\n\n')
-        raise SystemExit
+        if not filters.get('indicator') and (not filters.get('tags') and
+                                             ADVANCED is False):
+            print('\nmissing --tags [phishing|malware|botnet|scanner|pdns|'
+                  'whitelist|...]\n\n')
+            raise SystemExit
 
     try:
         rv = cli.search(filters)
@@ -255,6 +257,11 @@ def main():
 
     if args.graph:
         _graph(cli, args, options, filters)
+
+    if not sys.stdin.isatty():
+        buffer = sys.stdin.read().rstrip("\n").split("\n")
+
+        filters = [{'indicator': i} for i in buffer]
 
     _search(cli, args, options, filters)
 

@@ -264,6 +264,9 @@ class HTTP(Client):
         return self._get('stats', params=filters)
 
     def indicators_search(self, filters):
+        if isinstance(filters, list):
+            return self._post('indicators/bulk', filters, 200)
+
         data = self._get('indicators', params=filters)
         return data
 
